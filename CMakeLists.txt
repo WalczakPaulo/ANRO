@@ -1,0 +1,51 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(anro1)
+
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+  message_generation
+  genmsg
+)
+
+
+ add_message_files(
+   DIRECTORY
+   FILES
+   mapMessage.msg
+ )
+
+
+ generate_messages(
+   DEPENDENCIES
+   std_msgs
+ )
+
+
+
+
+
+
+catkin_package(
+  INCLUDE_DIRS include
+  LIBRARIES anro1
+  CATKIN_DEPENDS message_runtime roscpp rospy std_msgs 
+  DEPENDS system_lib
+)
+
+
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+add_executable(MapOfCity src/MapOfCity.cpp)
+target_link_libraries(MapOfCity ${catkin_LIBRARIES})
+add_dependencies(MapOfCity anro1_generate_messages_cpp)
+
+add_executable(listener src/listener.cpp)
+target_link_libraries(listener ${catkin_LIBRARIES})
+add_dependencies(listener anro1_generate_messages_cpp)
